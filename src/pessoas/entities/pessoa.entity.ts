@@ -3,14 +3,14 @@ export class PessoaEntity {
     private _apelido: string;
     private _nome: string;
     private _nascimento: Date;
-    private _stack?: Array<string> = [];
+    private _stack?: Array<string> | null;
 
     constructor(id: string, apelido: string, nome: string, nascimento: Date, stack?: Array<string>) {
         this._id = id;
         this._apelido = apelido;
         this._nome = nome;
         this._nascimento = nascimento;
-        this._stack = stack;
+        this._stack = stack || null;
     }
 
     get id(){
