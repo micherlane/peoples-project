@@ -1,0 +1,10 @@
+@startuml
+
+class Pessoa {
+    apelido: String
+    nome: String
+    nascimento: Date 
+    stack: Array<String>
+}
+
+@enduml
