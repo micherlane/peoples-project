@@ -27,7 +27,7 @@ export class CreatePessoaController {
   })
 
   @Post("pessoas")
-  create(@Res() res, @Body() createPessoaDto: CreatePessoaDto) {
+  async create(@Res() res, @Body() createPessoaDto: CreatePessoaDto) {
     if (!createPessoaDto.apelido || !createPessoaDto.nome || !createPessoaDto.nascimento) {
       return res.status(HttpStatus.BAD_REQUEST).json({
         "erro": "conteúdo inválido"
@@ -40,7 +40,7 @@ export class CreatePessoaController {
       })
     }
 
-    const novaPessoa = this.createPessoaCommand.execute(createPessoaDto);
+    const novaPessoa = await this.createPessoaCommand.execute(createPessoaDto);
 
     if(novaPessoa instanceof UsuarioExistenteError){
       return res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({

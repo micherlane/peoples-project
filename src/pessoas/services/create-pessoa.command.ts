@@ -7,7 +7,7 @@ import { CreatePessoaDto } from '../dto/create-pessoa.dto';
 export class CreatePessoaCommandService{
   constructor( private pessoaRepository: PessoaRepository){}
 
-  public execute(createPessoaDto: CreatePessoaDto){
-    return this.pessoaRepository.salvarPessoa(createPessoaDto);
+  public async execute(createPessoaDto: CreatePessoaDto){
+    return await this.pessoaRepository.salvarPessoa(createPessoaDto);
   }
 }

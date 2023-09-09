@@ -4,31 +4,31 @@ import { PessoaEntity } from "../entities/pessoa.entity";
 import { v4 as uuidv4 } from 'uuid';
 import { UsuarioExistenteError } from "../err/usuario-cadastrado.err";
 
+import prismaClient from '../../prisma';
+
 @Injectable()
 export class PessoaRepository {
-    private pessoas: PessoaEntity[] = [];
 
-    private existePessoa(apelido: string){
-        const apelidoEncontrado = this.pessoas.find((pessoa) => pessoa.apelido === apelido);
-        return apelidoEncontrado;
-    }
+    public async salvarPessoa(pessoa: CreatePessoaDto) {
 
-    public salvarPessoa(pessoa: CreatePessoaDto) {
-        if(this.existePessoa(pessoa.apelido)){
+        const usuarioJaExiste = await prismaClient.pessoa.findFirst({
+            where: {
+                apelido: pessoa.apelido,
+            }
+        });
+
+        if(usuarioJaExiste){
             return new UsuarioExistenteError();
         }
 
-        const id = uuidv4();
-
-        const novaPessoa = new PessoaEntity(
-            id,
-            pessoa.apelido,
-            pessoa.nome,
-            pessoa.nascimento,
-            pessoa.stack
-        );
-
-        this.pessoas.push(novaPessoa);
+        const novaPessoa = await prismaClient.pessoa.create({
+            data: {
+                apelido: pessoa.apelido,
+                nome: pessoa.nome,
+                nascimento: new Date(pessoa.nascimento),
+                stack: pessoa.stack || [],
+            }
+        });
 
         return novaPessoa;
     }
