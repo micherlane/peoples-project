@@ -3,6 +3,7 @@ import { CreatePessoaDto } from '../dto/create-pessoa.dto';
 import { CreatePessoaCommandService } from '../services/create-pessoa.command';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetPessoaDto } from '../dto/get-pessoa.dto';
+import { UsuarioExistenteError } from '../err/usuario-cadastrado.err';
 
 @ApiTags('pessoas')
 
@@ -28,18 +29,24 @@ export class CreatePessoaController {
   @Post("pessoas")
   create(@Res() res, @Body() createPessoaDto: CreatePessoaDto) {
     if (!createPessoaDto.apelido || !createPessoaDto.nome || !createPessoaDto.nascimento) {
-      return res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+      return res.status(HttpStatus.BAD_REQUEST).json({
         "erro": "conteúdo inválido"
       });
     }
 
     if((typeof createPessoaDto.nome !== "string") || (typeof createPessoaDto.apelido !== "string")){
-      return res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+      return res.status(HttpStatus.BAD_REQUEST).json({
         "erro": "conteúdo inválido"
       })
     }
 
     const novaPessoa = this.createPessoaCommand.execute(createPessoaDto);
+
+    if(novaPessoa instanceof UsuarioExistenteError){
+      return res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+        error: novaPessoa.message
+      })
+    }
     
     return res.json(novaPessoa);
   }
