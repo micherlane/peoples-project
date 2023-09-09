@@ -1,7 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { CreatePessoaDto } from "../dto/create-pessoa.dto";
-import { PessoaEntity } from "../entities/pessoa.entity";
-import { v4 as uuidv4 } from 'uuid';
 import { UsuarioExistenteError } from "../err/usuario-cadastrado.err";
 
 import prismaClient from '../../prisma';
@@ -31,5 +29,15 @@ export class PessoaRepository {
         });
 
         return novaPessoa;
+    }
+
+    public async consultarPessoa(id: string){
+        const pessoa = await prismaClient.pessoa.findFirst({
+            where: {
+                id: id
+            }
+        });
+
+        return pessoa;
     }
 }

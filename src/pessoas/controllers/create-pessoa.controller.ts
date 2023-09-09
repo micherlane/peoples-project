@@ -2,7 +2,7 @@ import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { CreatePessoaDto } from '../dto/create-pessoa.dto';
 import { CreatePessoaCommandService } from '../services/create-pessoa.command';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { GetPessoaDto } from '../dto/get-pessoa.dto';
+import { PessoaDto } from '../dto/pessoa.dto';
 import { UsuarioExistenteError } from '../err/usuario-cadastrado.err';
 
 @ApiTags('pessoas')
@@ -23,7 +23,7 @@ export class CreatePessoaController {
   
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: GetPessoaDto
+    type: PessoaDto
   })
 
   @Post("pessoas")
@@ -48,7 +48,8 @@ export class CreatePessoaController {
       })
     }
     
-    return res.json(novaPessoa);
+    const pessoaDto = PessoaDto.tranformarPessoaPrisma(novaPessoa);
+    return res.json(pessoaDto);
   }
 
 
