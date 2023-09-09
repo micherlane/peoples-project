@@ -13,4 +13,4 @@ Esta é uma simples api destinada para fazer um cadastro e consulta.
 ## Stay in touch
 
 - Author - [Enalrehcim]
-- Website - [https://nestjs.com](https://pessoas-project.onrender.com/api)
+- Website - [documentação-API](https://pessoas-project.onrender.com/api)
