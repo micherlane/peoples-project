@@ -4,6 +4,16 @@ import { UsuarioExistenteError } from "../err/usuario-cadastrado.err";
 
 import prismaClient from '../../prisma';
 
+enum ColunasBusca {
+    apelido = "apelido",
+    nome = "nome",
+    stack = "stack"
+}
+
+interface PessoaCondicao {
+    OR?: { [key: string ] : any } [];
+}
+
 @Injectable()
 export class PessoaRepository {
 
@@ -39,5 +49,42 @@ export class PessoaRepository {
         });
 
         return pessoa;
+    }
+
+    private criarCondicaoBusca(termo: string): PessoaCondicao{
+        const condicao: PessoaCondicao = {};
+
+        condicao.OR = Object.keys(ColunasBusca).map((key) => {
+            const coluna = ColunasBusca[key];
+
+            const condicaoColuna: any = {};
+
+            if (coluna === "stack"){
+                condicaoColuna[coluna] = { hasSome: [termo]}
+            } else {
+                condicaoColuna[coluna] = { contains: termo };
+            }
+
+            return condicaoColuna;
+        })
+
+        return condicao;
+    }
+
+    public async buscarPorTermoPessoa(termo: string){
+        const condicao = this.criarCondicaoBusca(termo);
+        
+        const pessoasEncontradas = await prismaClient.pessoa.findMany({
+            where: condicao,
+            select: {
+                id: true,
+                apelido: true,
+                nome: true,
+                nascimento: true,
+                stack: true
+            }
+        });
+
+        return pessoasEncontradas;
     }
 }
