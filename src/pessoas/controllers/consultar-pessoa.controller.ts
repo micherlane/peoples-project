@@ -15,7 +15,8 @@ export class ConsultarPessoaController {
     ){}
 
     @ApiResponse({
-        type: PessoaDto
+        type: PessoaDto,
+        status: HttpStatus.OK,
     })
     @Get("pessoas/:id")
     async consultarPessoa(@Res() res, @Param("id") id: string){

@@ -87,4 +87,11 @@ export class PessoaRepository {
 
         return pessoasEncontradas;
     }
+
+
+    public async getTotalDePessoasCadastradas(){
+        const quantidadePessoasCadastradas = await prismaClient.pessoa.count();
+
+        return quantidadePessoasCadastradas;
+    }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Res } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Query, Res } from "@nestjs/common";
 import { ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { BuscarPorTermoQueryService } from "../services/buscar-por-termo-pessoa.query";
 import { PessoaDto } from "../dto/pessoa.dto";
@@ -19,7 +19,8 @@ export class BuscarPorTermoPessoaController {
         description: "Termo que deve ser buscado."
     })
     @ApiResponse({
-        type: [PessoaDto]
+        type: [PessoaDto],
+        status: HttpStatus.OK
     })
     @Get('pessoas')
     public async buscarPorTermoPessoa(@Res() res, @Query("t") t: string){
