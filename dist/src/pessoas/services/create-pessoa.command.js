@@ -12,12 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreatePessoaCommandService = void 0;
 const common_1 = require("@nestjs/common");
 const pessoas_repository_1 = require("../repositories/pessoas.repository");
+const pessoa_entity_1 = require("../entities/pessoa.entity");
 let CreatePessoaCommandService = class CreatePessoaCommandService {
     constructor(pessoaRepository) {
         this.pessoaRepository = pessoaRepository;
     }
     async execute(createPessoaDto) {
-        return await this.pessoaRepository.salvarPessoa(createPessoaDto);
+        const novaPessoa = new pessoa_entity_1.PessoaEntity(null, createPessoaDto.apelido, createPessoaDto.nome, createPessoaDto.nascimento, createPessoaDto.stack);
+        return await this.pessoaRepository.salvarPessoa(novaPessoa);
     }
 };
 exports.CreatePessoaCommandService = CreatePessoaCommandService;

@@ -5,8 +5,8 @@ export declare class BuscarPorTermoQueryService {
     execute(termo: string): Promise<{
         apelido: string;
         nome: string;
-        nascimento: Date;
         stack: string[];
         id: string;
+        nascimento: Date;
     }[]>;
 }

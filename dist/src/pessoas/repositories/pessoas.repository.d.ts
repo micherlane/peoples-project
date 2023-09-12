@@ -1,7 +1,7 @@
-import { CreatePessoaDto } from "../dto/create-pessoa.dto";
 import { UsuarioExistenteError } from "../err/usuario-cadastrado.err";
+import { PessoaEntity } from "../entities/pessoa.entity";
 export declare class PessoaRepository {
-    salvarPessoa(pessoa: CreatePessoaDto): Promise<UsuarioExistenteError | {
+    salvarPessoa(pessoa: PessoaEntity): Promise<UsuarioExistenteError | {
         id: string;
         apelido: string;
         nome: string;
@@ -23,9 +23,9 @@ export declare class PessoaRepository {
     buscarPorTermoPessoa(termo: string): Promise<{
         apelido: string;
         nome: string;
-        nascimento: Date;
         stack: string[];
         id: string;
+        nascimento: Date;
     }[]>;
     getTotalDePessoasCadastradas(): Promise<number>;
 }
