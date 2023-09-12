@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { CreatePessoaDto } from "../dto/create-pessoa.dto";
 import { UsuarioExistenteError } from "../err/usuario-cadastrado.err";
 
 import prismaClient from '../../prisma';
+import { PessoaEntity } from "../entities/pessoa.entity";
 
 enum ColunasBusca {
     apelido = "apelido",
@@ -17,7 +17,7 @@ interface PessoaCondicao {
 @Injectable()
 export class PessoaRepository {
 
-    public async salvarPessoa(pessoa: CreatePessoaDto) {
+    public async salvarPessoa(pessoa: PessoaEntity) {
 
         const usuarioJaExiste = await prismaClient.pessoa.findFirst({
             where: {
